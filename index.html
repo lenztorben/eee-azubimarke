@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EEW AzubiMarke – Strategische Analyse Phase 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lt-yellow:     #f7f046;
+            --lt-lime:       #cfeb00;
+            --lt-dark-green: #1e3834;
+            --lt-black:      #221221;
+            --lt-gray:       #f2f4f2;
+            --lt-mid-gray:   #c0c8cc;
+            --lt-white:      #ffffff;
+            --font:          'Montserrat', sans-serif;
+            --eew-red:       #cc0000;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font); color: var(--lt-black); background: var(--lt-white); font-size: 15px; line-height: 1.6; }
+
+        /* ── HEADER ── */
+        .lt-header { background: var(--lt-dark-green); padding: 28px 48px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .lt-header__logo { font-size: 18px; font-weight: 700; color: var(--lt-lime); letter-spacing: 0.05em; }
+        .lt-header__logo span { color: white; font-weight: 300; }
+        .lt-header__meta { text-align: right; }
+        .lt-header__doctype { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--lt-lime); margin-bottom: 6px; }
+        .lt-header__title { font-size: 24px; font-weight: 700; color: white; margin-bottom: 4px; }
+        .lt-header__subtitle { font-size: 13px; color: rgba(255,255,255,.6); }
+        .lt-accent-bar { height: 5px; background: linear-gradient(90deg, var(--lt-yellow), var(--lt-lime)); }
+        .lt-meta-row { background: var(--lt-gray); padding: 12px 48px; display: flex; gap: 36px; flex-wrap: wrap; }
+        .lt-meta-item__label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #999; margin-bottom: 2px; }
+        .lt-meta-item__value { font-size: 13px; font-weight: 600; }
+
+        /* ── TAB NAVIGATION ── */
+        .tab-nav-wrapper { position: sticky; top: 0; z-index: 100; background: var(--lt-dark-green); border-bottom: 3px solid var(--lt-lime); box-shadow: 0 2px 12px rgba(0,0,0,.2); }
+        .tab-nav { max-width: 1100px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; }
+        .tab-nav::-webkit-scrollbar { display: none; }
+        .tab-btn { padding: 14px 22px; font-family: var(--font); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.6); background: transparent; border: none; cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -3px; transition: color .2s, border-color .2s; }
+        .tab-btn:hover { color: rgba(255,255,255,.9); }
+        .tab-btn.active { color: var(--lt-lime); border-bottom-color: var(--lt-lime); }
+        .tab-btn .tab-num { display: inline-block; background: rgba(255,255,255,.1); color: rgba(255,255,255,.5); width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 700; text-align: center; line-height: 18px; margin-right: 7px; }
+        .tab-btn.active .tab-num { background: var(--lt-lime); color: var(--lt-dark-green); }
+
+        /* ── TAB PANELS ── */
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── LAYOUT ── */
+        .lt-main { max-width: 1100px; margin: 0 auto; padding: 48px 48px 80px; }
+        .lt-section { margin-bottom: 56px; }
+        .lt-section__header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2.5px solid var(--lt-lime); }
+        .lt-section__number { background: var(--lt-dark-green); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+        .lt-section__title { font-size: 15px; font-weight: 700; color: var(--lt-dark-green); text-transform: uppercase; letter-spacing: .06em; }
+
+        /* ── KOMPONENTEN ── */
+        .lt-highlight { background: var(--lt-yellow); border-left: 4px solid var(--lt-dark-green); padding: 16px 20px; margin-bottom: 24px; border-radius: 0 6px 6px 0; }
+        .lt-highlight__label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--lt-dark-green); margin-bottom: 6px; }
+        .lt-highlight__text { font-size: 15px; font-weight: 500; line-height: 1.55; }
+
+        .lt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .lt-card { background: var(--lt-gray); border-radius: 8px; padding: 20px; }
+        .lt-card--accent { background: var(--lt-dark-green); color: white; }
+        .lt-card--warn { background: #fff3cd; border: 1.5px solid #f59e0b; }
+        .lt-card--red { background: #fde8e8; border: 1.5px solid #fca5a5; }
+        .lt-card__label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #999; margin-bottom: 6px; }
+        .lt-card--accent .lt-card__label { color: rgba(255,255,255,.55); }
+        .lt-card--warn .lt-card__label, .lt-card--red .lt-card__label { color: #92400e; }
+        .lt-card__value { font-size: 26px; font-weight: 700; color: var(--lt-dark-green); line-height: 1.1; }
+        .lt-card--accent .lt-card__value { color: var(--lt-lime); }
+        .lt-card--warn .lt-card__value { font-size: 16px; color: #92400e; }
+        .lt-card--red .lt-card__value { font-size: 16px; color: #b91c1c; }
+        .lt-card__sub { font-size: 12px; color: #888; margin-top: 4px; }
+        .lt-card--accent .lt-card__sub { color: rgba(255,255,255,.55); }
+
+        .lt-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+        .lt-cols--3 { grid-template-columns: 1fr 1fr 1fr; }
+        .lt-cols--4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+        .lt-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13.5px; }
+        .lt-table thead th { background: var(--lt-dark-green); color: white; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+        .lt-table tbody tr:nth-child(even) { background: var(--lt-gray); }
+        .lt-table tbody td { padding: 10px 14px; border-bottom: 1px solid #e5e5e5; vertical-align: middle; }
+
+        .lt-prose p { margin-bottom: 12px; line-height: 1.7; font-size: 14px; }
+        .lt-prose ul { padding-left: 20px; margin-bottom: 12px; }
+        .lt-prose li { margin-bottom: 6px; font-size: 14px; line-height: 1.6; }
+        .lt-prose h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--lt-dark-green); margin: 16px 0 8px; }
+
+        .lt-quote { border-left: 4px solid var(--lt-lime); padding: 12px 20px; margin: 14px 0; font-style: italic; color: #333; font-size: 14px; background: var(--lt-gray); border-radius: 0 4px 4px 0; }
+        .lt-quote cite { display: block; margin-top: 6px; font-style: normal; font-size: 12px; font-weight: 600; color: var(--lt-dark-green); }
+
+        .lt-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .lt-tag { background: var(--lt-lime); color: var(--lt-dark-green); font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+        .lt-tag--outline { background: transparent; border: 1.5px solid var(--lt-mid-gray); color: #666; }
+        .lt-tag--dark { background: var(--lt-dark-green); color: white; }
+        .lt-tag--red { background: #fde8e8; color: #b91c1c; }
+
+        .lt-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .lt-badge--green  { background: #d4f5e2; color: #1a6b3c; }
+        .lt-badge--lime   { background: var(--lt-lime); color: var(--lt-dark-green); }
+        .lt-badge--yellow { background: var(--lt-yellow); color: var(--lt-dark-green); }
+        .lt-badge--red    { background: #fde8e8; color: #b91c1c; }
+        .lt-badge--gray   { background: #e8e8e8; color: #666; }
+        .lt-badge--orange { background: #fff3cd; color: #92400e; }
+
+        .lt-actions { list-style: none; }
+        .lt-actions li { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid #eee; }
+        .lt-actions li:last-child { border-bottom: none; }
+        .lt-actions__num { background: var(--lt-lime); color: var(--lt-dark-green); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+        .lt-actions__text { font-size: 14px; line-height: 1.55; }
+        .lt-actions__text strong { display: block; font-weight: 600; margin-bottom: 2px; }
+
+        .principle-card { background: var(--lt-gray); border-radius: 8px; padding: 18px 20px; margin-bottom: 12px; display: flex; gap: 16px; align-items: flex-start; }
+        .principle-num  { background: var(--lt-dark-green); color: var(--lt-lime); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+        .principle-body strong { display: block; font-size: 14px; font-weight: 700; color: var(--lt-dark-green); margin-bottom: 4px; }
+        .principle-body p { font-size: 13px; color: #555; margin: 0; line-height: 1.5; }
+
+        .hinweis-box { background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; font-size: 13px; color: #78350f; }
+        .hinweis-box strong { display: block; margin-bottom: 4px; font-weight: 700; }
+
+        .lt-footer { border-top: 2px solid var(--lt-gray); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #aaa; }
+        .lt-footer__brand { font-size: 14px; font-weight: 700; color: var(--lt-lime); background: var(--lt-dark-green); padding: 6px 14px; border-radius: 4px; letter-spacing: 0.05em; }
+        .lt-footer__brand span { color: white; font-weight: 300; }
+
+        /* ── GEGENSATZPAARE MATRIX ── */
+        .gp-group-header { padding: 7px 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+        .gp-group--halten { background: #f0fdf4; color: #166534; border-left: 4px solid #4ade80; }
+        .gp-group--entwickeln { background: #fff7ed; color: #92400e; border-left: 4px solid #f59e0b; margin-top: 4px; }
+        .gp-group--spannung { background: #fef2f2; color: #b91c1c; border-left: 4px solid #f87171; margin-top: 4px; }
+        .gp-row { display: grid; grid-template-columns: 120px 1fr 120px 90px 90px 80px 140px; gap: 8px; align-items: center; padding: 9px 14px; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+        .gp-row:hover { background: #fafafa; }
+        .gp-pole-left  { text-align: right; font-weight: 600; color: #444; }
+        .gp-pole-right { text-align: left; font-weight: 600; color: #444; }
+        .gp-pole-right.bold { font-weight: 700; color: var(--lt-dark-green); }
+        .gp-scale { position: relative; height: 22px; }
+        .gp-scale-bg { position: absolute; left: 0; right: 0; top: 50%; height: 3px; background: #e0e0e0; transform: translateY(-50%); border-radius: 2px; }
+        .gp-scale-center { position: absolute; left: 50%; top: 50%; width: 1px; height: 14px; background: #bbb; transform: translate(-50%,-50%); }
+        .gp-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; top: 50%; transform: translate(-50%,-50%); border: 2px solid white; }
+        .gp-dot-ist  { background: #3b82f6; z-index: 2; }
+        .gp-dot-soll { background: var(--eew-red); z-index: 3; }
+        .gp-dot-same { background: #555; z-index: 2; }
+        .gp-val { font-size: 12px; color: #666; text-align: center; }
+        .gp-gap-bar { height: 8px; border-radius: 4px; min-width: 6px; }
+        .gp-gap-none   { background: #d4f5e2; width: 8px; }
+        .gp-gap-low    { background: var(--lt-lime); width: 28px; }
+        .gp-gap-mid    { background: #f59e0b; width: 52px; }
+        .gp-gap-high   { background: #ef4444; width: 76px; }
+        .gp-gap-crit   { background: #b91c1c; width: 96px; }
+        .gp-header-row { display: grid; grid-template-columns: 120px 1fr 120px 90px 90px 80px 140px; gap: 8px; padding: 8px 14px; background: var(--lt-dark-green); border-radius: 6px 6px 0 0; color: white; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+
+        /* ── MARKEN-PERSONA ── */
+        .persona-wrap { display: grid; grid-template-columns: 280px 1fr; gap: 32px; margin-bottom: 32px; }
+        .persona-card { background: var(--lt-dark-green); border-radius: 12px; padding: 28px 24px; color: white; }
+        .persona-card__name { font-size: 28px; font-weight: 700; color: var(--lt-lime); line-height: 1; margin-bottom: 4px; }
+        .persona-card__tagline { font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 20px; }
+        .persona-card__attrs { list-style: none; }
+        .persona-card__attrs li { font-size: 13px; color: rgba(255,255,255,.85); padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.1); display: flex; gap: 8px; }
+        .persona-card__attrs li:last-child { border-bottom: none; }
+        .persona-card__attrs .attr-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--lt-lime); width: 70px; flex-shrink: 0; margin-top: 2px; }
+        .persona-traits { display: flex; flex-direction: column; gap: 16px; }
+        .trait-block { background: var(--lt-gray); border-radius: 8px; padding: 16px 20px; }
+        .trait-block__label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--lt-dark-green); margin-bottom: 8px; }
+        .trait-block__body { font-size: 13.5px; color: #444; line-height: 1.6; }
+
+        .finn-says { background: var(--lt-dark-green); border-radius: 8px; padding: 16px 18px; }
+        .finn-says__label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--lt-lime); margin-bottom: 10px; }
+        .finn-says li { color: rgba(255,255,255,.85); font-size: 13px; line-height: 1.5; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.1); list-style: none; }
+        .finn-says li:last-child { border-bottom: none; }
+        .finn-says li::before { content: '"'; color: var(--lt-lime); font-size: 16px; font-weight: 700; margin-right: 4px; }
+        .finn-never { background: #fde8e8; border-radius: 8px; padding: 16px 18px; }
+        .finn-never__label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #b91c1c; margin-bottom: 10px; }
+        .finn-never li { color: #555; font-size: 13px; line-height: 1.5; padding: 5px 0; border-bottom: 1px solid #fca5a5; list-style: none; text-decoration: line-through; text-decoration-color: #f87171; }
+        .finn-never li:last-child { border-bottom: none; }
+
+        /* ── DESIGN-ANFORDERUNGEN ── */
+        .design-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .design-card { border-radius: 10px; overflow: hidden; }
+        .design-card__header { padding: 14px 18px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+        .design-card__body { padding: 14px 18px; background: var(--lt-gray); font-size: 13px; color: #444; line-height: 1.6; }
+        .design-card__body ul { padding-left: 16px; margin: 0; }
+        .design-card__body li { margin-bottom: 5px; }
+        .design-card__science { padding: 10px 18px; background: #f8f8f8; font-size: 11px; color: #888; font-style: italic; border-top: 1px solid #eee; }
+        .dc-color  { background: #1e3834; color: white; }
+        .dc-typo   { background: #2d4a45; color: white; }
+        .dc-form   { background: #3d5e58; color: white; }
+        .dc-bild   { background: #4e726c; color: white; }
+        .dc-ton    { background: #5e8680; color: white; }
+        .dc-layout { background: #6e9a94; color: white; }
+
+        .color-swatch { display: flex; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+        .swatch { width: 36px; height: 36px; border-radius: 6px; border: 2px solid rgba(255,255,255,.2); }
+        .swatch-label { font-size: 10px; color: rgba(255,255,255,.7); text-align: center; margin-top: 3px; }
+
+        /* ── ORIGINALZITATE ── */
+        .zitate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .zitat-card { background: var(--lt-gray); border-radius: 8px; padding: 20px; border-top: 4px solid var(--lt-lime); }
+        .zitat-card__person { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--lt-dark-green); margin-bottom: 10px; }
+        .zitat-card__text { font-size: 14px; font-style: italic; color: #333; line-height: 1.6; margin-bottom: 8px; }
+        .zitat-card__text::before { content: '„'; font-size: 20px; color: var(--lt-lime); font-style: normal; font-weight: 700; line-height: 0.5; vertical-align: -4px; margin-right: 2px; }
+        .zitat-card__text::after  { content: '"'; font-size: 20px; color: var(--lt-lime); font-style: normal; font-weight: 700; line-height: 0.5; vertical-align: -4px; margin-left: 2px; }
+        .zitat-card__meta { font-size: 11px; color: #999; }
+        .zitat-card--key { border-top-color: var(--eew-red); background: #fff5f5; }
+        .zitat-card--key .zitat-card__text::before, .zitat-card--key .zitat-card__text::after { color: var(--eew-red); }
+
+        @media (max-width: 900px) {
+            .lt-header { padding: 20px 24px; flex-direction: column; gap: 12px; }
+            .lt-header__meta { text-align: left; }
+            .lt-meta-row { padding: 12px 24px; }
+            .lt-main { padding: 32px 24px 60px; }
+            .lt-cols--4 { grid-template-columns: 1fr 1fr; }
+            .design-grid { grid-template-columns: 1fr 1fr; }
+            .persona-wrap { grid-template-columns: 1fr; }
+            .gp-row { grid-template-columns: 90px 1fr 90px 60px 60px 60px 100px; font-size: 12px; padding: 8px; }
+            .gp-header-row { display: none; }
+            .lt-footer { padding: 20px 24px; flex-direction: column; gap: 12px; text-align: center; }
+        }
+        @media (max-width: 600px) {
+            .lt-cols { grid-template-columns: 1fr; }
+            .lt-cols--3 { grid-template-columns: 1fr; }
+            .lt-cols--4 { grid-template-columns: 1fr; }
+            .design-grid { grid-template-columns: 1fr; }
+            .zitate-grid { grid-template-columns: 1fr; }
+            .gp-row { grid-template-columns: 70px 1fr 70px; gap: 4px; }
+            .gp-val, .gp-gap-bar, .gp-row > :nth-child(4), .gp-row > :nth-child(5), .gp-row > :nth-child(6) { display: none; }
+            .tab-btn { padding: 12px 14px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="lt-header">
+    <div class="lt-header__logo">lemon<span>tree</span></div>
+    <div class="lt-header__meta">
+        <div class="lt-header__doctype">Kundenanalyse · AzubiMarke Phase 2</div>
+        <div class="lt-header__title">EEW Group – AzubiMarke</div>
+        <div class="lt-header__subtitle">Strategische Analyse · Markencharakter &amp; Leitidee</div>
+    </div>
+</header>
+<div class="lt-accent-bar"></div>
+<div class="lt-meta-row">
+    <div class="lt-meta-item"><div class="lt-meta-item__label">Kunde</div><div class="lt-meta-item__value">EEW Pipe Production Erndtebrück</div></div>
+    <div class="lt-meta-item"><div class="lt-meta-item__label">Projekt</div><div class="lt-meta-item__value">AzubiMarke – Phase 2</div></div>
+    <div class="lt-meta-item"><div class="lt-meta-item__label">Stand</div><div class="lt-meta-item__value">07. Mai 2026</div></div>
+    <div class="lt-meta-item"><div class="lt-meta-item__label">Datengrundlage</div><div class="lt-meta-item__value">5 Interviews · 6 Gegensatzpaare-Bögen · Webrecherche</div></div>
+    <div class="lt-meta-item"><div class="lt-meta-item__label">Status</div><div class="lt-meta-item__value"><span class="lt-badge lt-badge--lime">Workshop-ready</span></div></div>
+</div>
+
+<!-- TAB NAVIGATION -->
+<div class="tab-nav-wrapper">
+    <nav class="tab-nav" role="tablist">
+        <button class="tab-btn active" role="tab" onclick="showTab('ueberblick', this)">
+            <span class="tab-num">1</span>Überblick
+        </button>
+        <button class="tab-btn" role="tab" onclick="showTab('daten', this)">
+            <span class="tab-num">2</span>Zielgruppe &amp; Daten
+        </button>
+        <button class="tab-btn" role="tab" onclick="showTab('erkenntnisse', this)">
+            <span class="tab-num">3</span>Erkenntnisse
+        </button>
+        <button class="tab-btn" role="tab" onclick="showTab('marke', this)">
+            <span class="tab-num">4</span>Markencharakter
+        </button>
+        <button class="tab-btn" role="tab" onclick="showTab('design', this)">
+            <span class="tab-num">5</span>Design
+        </button>
+        <button class="tab-btn" role="tab" onclick="showTab('workshop', this)">
+            <span class="tab-num">6</span>Workshop
+        </button>
+    </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 1 · ÜBERBLICK
+     ══════════════════════════════════════════════════════ -->
+<div id="tab-ueberblick" class="tab-panel active">
+<main class="lt-main">
+
+<!-- 1 · AUF EINEN BLICK -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">1</div>
+        <div class="lt-section__title">Auf einen Blick</div>
+    </div>
+    <div class="lt-highlight">
+        <div class="lt-highlight__label">Kernbefund</div>
+        <div class="lt-highlight__text">EEW ist von innen ein ausgezeichneter Ausbildungsbetrieb. Wer EEW kennt, liebt EEW. Das Problem: Kaum jemand außerhalb des persönlichen Netzwerks kennt EEW – oder bekommt ein Bild davon, das zum Bewerben einlädt. Die größte Lücke liegt nicht im Charakter, sondern in der externen Lautstärke und Sichtbarkeit. EEW redet zu leise über das, was es wirklich ist.</div>
+    </div>
+    <div class="lt-grid">
+        <div class="lt-card">
+            <div class="lt-card__label">Interviews</div>
+            <div class="lt-card__value">5</div>
+            <div class="lt-card__sub">Marie, Jana, Julius, Luca &amp; Jannik, Luisa</div>
+        </div>
+        <div class="lt-card">
+            <div class="lt-card__label">Gegensatzpaare-Bögen</div>
+            <div class="lt-card__value">6</div>
+            <div class="lt-card__sub">17 Attribute, IST + SOLL je Respondent</div>
+        </div>
+        <div class="lt-card lt-card--warn">
+            <div class="lt-card__label">Größte Lücke</div>
+            <div class="lt-card__value">Leise → Laut</div>
+            <div class="lt-card__sub" style="color:#92400e;">Externe Sichtbarkeit &amp; Kommunikationslautstärke</div>
+        </div>
+        <div class="lt-card lt-card--accent">
+            <div class="lt-card__label">Strategischer Kern</div>
+            <div class="lt-card__value">Vertrautheit</div>
+            <div class="lt-card__sub">EEW muss bekannt sein, bevor jemand die Bewerbung öffnet</div>
+        </div>
+    </div>
+</section>
+
+<!-- 2 · ZIELGRUPPE PORTRAIT -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">2</div>
+        <div class="lt-section__title">Die Zielgruppe – Portrait</div>
+    </div>
+    <div class="lt-cols">
+        <div class="lt-card">
+            <div class="lt-card__label">Lebensrealität</div>
+            <br>
+            <div class="lt-prose">
+                <p>Regional verwurzelt, sozial eingebunden. Freundeskreis, Verein, Dorfjugend, Familie – das ist das soziale Gerüst. Man kennt sich, man redet miteinander. Ausbildungsentscheidungen entstehen oft in diesen Gesprächen, nicht durch Stellenanzeigen.</p>
+                <p>Mediennutzung morgens: kurze Scrollsessions auf Instagram oder TikTok, Musik, manchmal Podcasts. Kein aktives Informationssuchen – eher Berieselung und soziale Updates.</p>
+            </div>
+        </div>
+        <div class="lt-card">
+            <div class="lt-card__label">Wie Entscheidungen wirklich entstehen</div>
+            <br>
+            <div class="lt-prose">
+                <p>Kein einziger der fünf Interviewten hat EEW über einen klassischen Recruiting-Kanal gefunden. Stattdessen: Opa bei EEW, Vater der sagt „die sind gut", Onkel im Betrieb, Probearbeiten das überrascht.</p>
+                <p>Der Entscheidungsmechanismus ist konsequent derselbe: Erst Vertrautheit durch persönliche Verbindung → dann Erleben (Praktikum, Probearbeiten) → dann Entscheidung. Marketing spielt dabei keine direkte Rolle – aber es kann die Vertrautheit vorab aufbauen.</p>
+            </div>
+        </div>
+    </div>
+    <div class="lt-cols--3">
+        <div class="lt-card" style="border-top:4px solid #4ade80;">
+            <div class="lt-card__label">Was zieht an</div><br>
+            <div class="lt-prose"><ul>
+                <li>Empfehlung durch jemanden den man kennt</li>
+                <li>Direkter Erstkontakt – freundlich, auf Augenhöhe</li>
+                <li>Kurze Wege, schnelle Antworten</li>
+                <li>Gleichaltrige Kolleg:innen</li>
+                <li>Echte Einbindung (nicht „Azubi-Dasein")</li>
+            </ul></div>
+        </div>
+        <div class="lt-card" style="border-top:4px solid #f59e0b;">
+            <div class="lt-card__label">Was Unsicherheit schafft</div><br>
+            <div class="lt-prose"><ul>
+                <li>EEW ist nicht „auf dem Schirm" – kein Bild vorab</li>
+                <li>Produktionsbetrieb „auf dem Berg" – nicht sichtbar im Alltag</li>
+                <li>Messen empfunden als Pflichttermin, nicht als echter Kontakt</li>
+                <li>Social-Content der zu poliert wirkt = peinlich</li>
+            </ul></div>
+        </div>
+        <div class="lt-card" style="border-top:4px solid #f87171;">
+            <div class="lt-card__label">Was definitiv nicht funktioniert</div><br>
+            <div class="lt-prose"><ul>
+                <li>Ausbildungsmessen: „Alle schleppen sich rum, keiner hat Bock"</li>
+                <li>Unternehmensvideos die zu professionell wirken</li>
+                <li>Abstrakte Karriereversprechen ohne Einordnung</li>
+                <li>Kommunikation die nur 16-Jährige adressiert – Eltern und Lehrer werden ignoriert</li>
+            </ul></div>
+        </div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 2 · ZIELGRUPPE & DATEN
+     ══════════════════════════════════════════════════════ -->
+<div id="tab-daten" class="tab-panel">
+<main class="lt-main">
+
+<!-- 3 · GEGENSATZPAARE MATRIX -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">3</div>
+        <div class="lt-section__title">Gegensatzpaare – IST / SOLL Matrix (n=6)</div>
+    </div>
+
+    <div style="display:flex;gap:24px;margin-bottom:16px;font-size:12px;align-items:center;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:12px;height:12px;border-radius:50%;background:#3b82f6;"></div><span>IST – Wie EEW aktuell wirkt (Durchschnitt, n=6)</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:12px;height:12px;border-radius:50%;background:#cc0000;"></div><span>SOLL – Wie EEW für Azubis wirken soll</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:12px;height:12px;border-radius:50%;background:#555;"></div><span>IST = SOLL (kein Gap gewünscht)</span></div>
+        <div style="color:#888;font-style:italic;">Skala: –3 (linker Pol) bis +3 (rechter Pol) · Werte sind Positionsschätzungen aus 6 Bögen + Interview-Validierung</div>
+    </div>
+
+    <div class="gp-header-row">
+        <div>Linker Pol</div><div style="text-align:center;">Skala (Ø Positionsschätzung)</div><div>Rechter Pol</div><div style="text-align:center;">Ø IST</div><div style="text-align:center;">Ø SOLL</div><div>Gap</div><div>Bewertung</div>
+    </div>
+
+    <div class="gp-group-header gp-group--halten">Kernstärken – IST und SOLL stimmen überein · unbedingt kommunizieren</div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">herzlich</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-same" style="left:12%;"></div></div>
+        <div class="gp-pole-right">kühl</div>
+        <div class="gp-val">−2,3</div><div class="gp-val">−2,0</div>
+        <div><div class="gp-gap-bar gp-gap-none"></div></div>
+        <div><span class="lt-badge lt-badge--green">Kernstärke · zeigen</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">menschlich</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-same" style="left:17%;"></div></div>
+        <div class="gp-pole-right">sachlich</div>
+        <div class="gp-val">−2,0</div><div class="gp-val">−2,0</div>
+        <div><div class="gp-gap-bar gp-gap-none"></div></div>
+        <div><span class="lt-badge lt-badge--green">Kernstärke · zeigen</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">nahbar</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-same" style="left:12%;"></div></div>
+        <div class="gp-pole-right">distanziert</div>
+        <div class="gp-val">−2,3</div><div class="gp-val">−2,3</div>
+        <div><div class="gp-gap-bar gp-gap-none"></div></div>
+        <div><span class="lt-badge lt-badge--green">Kernstärke · zeigen</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">locker</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-same" style="left:25%;"></div></div>
+        <div class="gp-pole-right">streng</div>
+        <div class="gp-val">−1,5</div><div class="gp-val">−1,5</div>
+        <div><div class="gp-gap-bar gp-gap-none"></div></div>
+        <div><span class="lt-badge lt-badge--green">Kernstärke · zeigen</span></div>
+    </div>
+
+    <div class="gp-row" style="background:#f0fdf4;">
+        <div class="gp-pole-left">unbeständig</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-same" style="left:87%;"></div></div>
+        <div class="gp-pole-right" style="font-weight:700;color:var(--lt-dark-green);">zuverlässig ★</div>
+        <div class="gp-val">+2,5</div><div class="gp-val">+2,5</div>
+        <div><div class="gp-gap-bar gp-gap-none"></div></div>
+        <div><span class="lt-badge lt-badge--green">Stärkster Pol gesamt</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">offen</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:17%;"></div><div class="gp-dot gp-dot-soll" style="left:25%;"></div></div>
+        <div class="gp-pole-right">verschlossen</div>
+        <div class="gp-val">−2,0</div><div class="gp-val">−1,5</div>
+        <div><div class="gp-gap-bar gp-gap-low"></div></div>
+        <div><span class="lt-badge lt-badge--green">kein Gap · halten</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">bodenständig</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-same" style="left:25%;"></div></div>
+        <div class="gp-pole-right">abgehoben</div>
+        <div class="gp-val">−1,5</div><div class="gp-val">−1,5</div>
+        <div><div class="gp-gap-bar gp-gap-none"></div></div>
+        <div><span class="lt-badge lt-badge--green">Kernstärke · zeigen</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">klar</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-same" style="left:25%;"></div></div>
+        <div class="gp-pole-right">verspielt</div>
+        <div class="gp-val">−1,5</div><div class="gp-val">−1,5</div>
+        <div><div class="gp-gap-bar gp-gap-none"></div></div>
+        <div><span class="lt-badge lt-badge--green">kein Gap · halten</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">verständlich</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-same" style="left:25%;"></div></div>
+        <div class="gp-pole-right">komplex</div>
+        <div class="gp-val">−1,5</div><div class="gp-val">−1,5</div>
+        <div><div class="gp-gap-bar gp-gap-none"></div></div>
+        <div><span class="lt-badge lt-badge--green">kein Gap · halten</span></div>
+    </div>
+
+    <div class="gp-group-header gp-group--entwickeln">Entwicklungsfelder – SOLL weicht deutlich von IST ab · aktiv bearbeiten</div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left">traditionell</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:58%;"></div><div class="gp-dot gp-dot-soll" style="left:80%;"></div></div>
+        <div class="gp-pole-right" style="font-weight:700;color:var(--lt-dark-green);">modern</div>
+        <div class="gp-val">+0,5</div><div class="gp-val">+1,8</div>
+        <div><div class="gp-gap-bar gp-gap-mid"></div></div>
+        <div><span class="lt-badge lt-badge--orange">Gap mittel · entwickeln</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left">konservativ</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:58%;"></div><div class="gp-dot gp-dot-soll" style="left:75%;"></div></div>
+        <div class="gp-pole-right" style="font-weight:700;color:var(--lt-dark-green);">innovativ</div>
+        <div class="gp-val">+0,5</div><div class="gp-val">+1,5</div>
+        <div><div class="gp-gap-bar gp-gap-mid"></div></div>
+        <div><span class="lt-badge lt-badge--orange">Gap mittel · entwickeln</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left">ruhig</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:58%;"></div><div class="gp-dot gp-dot-soll" style="left:75%;"></div></div>
+        <div class="gp-pole-right" style="font-weight:700;color:var(--lt-dark-green);">dynamisch</div>
+        <div class="gp-val">+0,5</div><div class="gp-val">+1,5</div>
+        <div><div class="gp-gap-bar gp-gap-mid"></div></div>
+        <div><span class="lt-badge lt-badge--orange">Gap mittel · entwickeln</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left" style="font-weight:700;color:var(--lt-dark-green);">strukturiert</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:50%;"></div><div class="gp-dot gp-dot-soll" style="left:58%;"></div></div>
+        <div class="gp-pole-right">flexibel</div>
+        <div class="gp-val">0,0</div><div class="gp-val">+0,5</div>
+        <div><div class="gp-gap-bar gp-gap-low"></div></div>
+        <div><span class="lt-badge lt-badge--gray">geringer Gap</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left">austauschbar</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:67%;"></div><div class="gp-dot gp-dot-soll" style="left:83%;"></div></div>
+        <div class="gp-pole-right" style="font-weight:700;color:var(--lt-dark-green);">besonders</div>
+        <div class="gp-val">+1,0</div><div class="gp-val">+2,0</div>
+        <div><div class="gp-gap-bar gp-gap-mid"></div></div>
+        <div><span class="lt-badge lt-badge--orange">Gap mittel · EEW schon positiv</span></div>
+    </div>
+
+    <div class="gp-row">
+        <div class="gp-pole-left">vorsichtig</div>
+        <div class="gp-scale"><div class="gp-scale-bg"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:50%;"></div><div class="gp-dot gp-dot-soll" style="left:63%;"></div></div>
+        <div class="gp-pole-right">mutig</div>
+        <div class="gp-val">0,0</div><div class="gp-val">+0,8</div>
+        <div><div class="gp-gap-bar gp-gap-low"></div></div>
+        <div><span class="lt-badge lt-badge--gray">geringer Gap</span></div>
+    </div>
+
+    <div class="gp-group-header gp-group--spannung">Kritische Gaps &amp; Spannungsfelder – größter Handlungsbedarf</div>
+
+    <div class="gp-row" style="background:#fef2f2;">
+        <div class="gp-pole-left">leise</div>
+        <div class="gp-scale"><div class="gp-scale-bg" style="background:#fca5a5;"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:50%;"></div><div class="gp-dot gp-dot-soll" style="left:83%;"></div></div>
+        <div class="gp-pole-right" style="font-weight:700;color:#b91c1c;">laut ★</div>
+        <div class="gp-val" style="color:#b91c1c;">0,0</div><div class="gp-val" style="color:#b91c1c;">+2,0</div>
+        <div><div class="gp-gap-bar gp-gap-crit"></div></div>
+        <div><span class="lt-badge lt-badge--red">GRÖSSTER GAP</span></div>
+    </div>
+
+    <div class="gp-row" style="background:#fef2f2;">
+        <div class="gp-pole-left">zurückhaltend</div>
+        <div class="gp-scale"><div class="gp-scale-bg" style="background:#fca5a5;"></div><div class="gp-scale-center"></div><div class="gp-dot gp-dot-ist" style="left:55%;"></div><div class="gp-dot gp-dot-soll" style="left:80%;"></div></div>
+        <div class="gp-pole-right" style="font-weight:700;color:#b91c1c;">präsent ★</div>
+        <div class="gp-val" style="color:#b91c1c;">+0,3 ⚡</div><div class="gp-val" style="color:#b91c1c;">+1,8</div>
+        <div><div class="gp-gap-bar gp-gap-high"></div></div>
+        <div><span class="lt-badge lt-badge--red">hoher Gap · Spannungsfeld</span></div>
+    </div>
+
+    <br>
+    <div style="display:flex;gap:16px;font-size:12px;flex-wrap:wrap;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:6px;"><div class="gp-gap-bar gp-gap-none"></div><span>kein Gap</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div class="gp-gap-bar gp-gap-low"></div><span>geringer Gap</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div class="gp-gap-bar gp-gap-mid"></div><span>mittlerer Gap</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div class="gp-gap-bar gp-gap-high"></div><span>hoher Gap</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div class="gp-gap-bar gp-gap-crit"></div><span>kritischer Gap</span></div>
+        <div style="color:#888;font-style:italic;">⚡ = Spannungsfeld zwischen Respondenten</div>
+    </div>
+
+    <div class="hinweis-box" style="margin-top:20px;">
+        <strong>Spannungsfelder zwischen den Respondenten</strong>
+        <strong>zurückhaltend / präsent:</strong> Das größte Meinungsfeld. Bogen 5 markiert EEW als sehr präsent (+3), Bogen 6 als zurückhaltend (−1). Erklärung: Wer täglich bei EEW ist, erlebt es als präsent und lebendig. Wer von außen kommt (Jana: „EEW war gar nicht so präsent" / Luisa: „Ich hatte EEW gar nicht so direkt auf dem Schirm"), sieht es anders. Das ist nicht widersprüchlich – es ist der Kern des Problems: EEW ist nach innen laut, nach außen leise.<br><br>
+        <strong>traditionell / modern:</strong> Leichtes Meinungsfeld. Jüngere, kaufmännische Azubis nehmen EEW moderner wahr. Gewerblich-technische Azubis eher traditioneller. Die Modernität ist vorhanden (Offshore Wind, neue Standorte), aber nicht überall gleichmäßig sichtbar.<br><br>
+        <strong>austauschbar / besonders:</strong> Einig auf positivem Niveau (+1 bis +2). Wer EEW kennt, erlebt es als besonders. Diese Besonderheit ist nicht in der Außenwahrnehmung angekommen – sie existiert nur im Innenerleben. Deshalb mittlerer Gap, nicht kritisch.
+    </div>
+
+    <div class="lt-highlight" style="margin-top:20px;">
+        <div class="lt-highlight__label">Ganzheitliches IST-Bild: So wirkt EEW heute auf die Befragten</div>
+        <div class="lt-highlight__text">EEW ist ein warmes, nahbares, bodenständiges Unternehmen mit echter Verlässlichkeit und einem starken menschlichen Miteinander. Es fühlt sich locker, offen und klar an – nicht distanziert, nicht kühl, nicht komplex. Als Ausbildungsbetrieb ist es für alle Befragten deutlich besser als erwartet – oft sogar überraschend gut. Die Schwäche liegt ausschließlich im externen Bild: EEW kommuniziert zu leise, ist extern kaum präsent und wird deshalb vor dem ersten Kontakt nicht als besonders wahrgenommen.</div>
+    </div>
+</section>
+
+<!-- 4 · ORIGINALZITATE -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">4</div>
+        <div class="lt-section__title">Originalzitate – Direkt aus den Interviews</div>
+    </div>
+    <p style="font-size:13px;color:#666;margin-bottom:20px;">Zitate sind die authentischste Form von Daten. Rot markierte Karten zeigen besonders strategisch relevante Aussagen.</p>
+
+    <div class="zitate-grid">
+        <div class="zitat-card zitat-card--key">
+            <div class="zitat-card__person">Jana · Industriekauffrau i.A.</div>
+            <div class="zitat-card__text">Für mich war EEW gar nicht so präsent.</div>
+            <div class="zitat-card__meta">Zum Unternehmen vor dem Erstkontakt · strategisch wichtigstes Zitat der Auswertung</div>
+        </div>
+        <div class="zitat-card zitat-card--key">
+            <div class="zitat-card__person">Luisa · Industriekauffrau i.A.</div>
+            <div class="zitat-card__text">Ich hatte EEW gar nicht so direkt auf dem Schirm. Ich weiß nicht, ob es daran liegt, dass sie quasi hier die große Produktion auf dem Berg haben.</div>
+            <div class="zitat-card__meta">Zum Unternehmen vor der Bewerbung · bestätigt Jana's Aussage unabhängig</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Marie · Kauffrau f. Büromanagement i.A.</div>
+            <div class="zitat-card__text">Es fühlt sich einfach an wie: ich geh nicht zur Ausbildung, sondern ich geh zur Arbeit.</div>
+            <div class="zitat-card__meta">Zum Arbeitsalltag bei EEW · Kernaussage zur echten Integration</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Marie · Kauffrau f. Büromanagement i.A.</div>
+            <div class="zitat-card__text">Wenn du hier eine gute Idee hast und du stellst das dem Geschäftsführer vor und der sagt, geil, dann hast du das am besten gestern schon umgesetzt.</div>
+            <div class="zitat-card__meta">Zu kurzen Entscheidungswegen · Differenziator zu großen Konzernen</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Jannik · Verfahrenstechnologe i.A.</div>
+            <div class="zitat-card__text">Hier war das Vorstellungsgespräch sehr angenehm, sehr schön. Man hat sich direkt wohlgefühlt, direkt so empfangen gefühlt.</div>
+            <div class="zitat-card__meta">Zum Erstkontakt · zeigt wie stark der erste Moment wirkt</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Luca · Konstruktionsmechaniker i.A.</div>
+            <div class="zitat-card__text">Ich habe mich eigentlich direkt wohlgefühlt. Ich muss nicht gucken, ob ich es in einer anderen Firma nehme.</div>
+            <div class="zitat-card__meta">Zur Entscheidungsschnelligkeit · ohne Vergleich mit anderen</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Jana · Industriekauffrau i.A.</div>
+            <div class="zitat-card__text">Die haben mich nicht nur als: Du bist nur der Azubi – sondern schon eher: Die haben mich aufgenommen.</div>
+            <div class="zitat-card__meta">Zur Teamintegration · „aufgenommen" als Schlüsselwort</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Julius · Industriekaufmann i.A.</div>
+            <div class="zitat-card__text">Ich würde sagen: familiär, seriös und gut.</div>
+            <div class="zitat-card__meta">EEW in drei Worten · spontan genannt, ohne Nachfrage</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Jannik · Verfahrenstechnologe i.A.</div>
+            <div class="zitat-card__text">Bei der Bundesagentur war für mich so ein Punkt, wo ich gesagt hab: Fühlt sich sehr fern an alles.</div>
+            <div class="zitat-card__meta">Kontrast zu EEW · „fern" vs. „nah" als entscheidendes Empfinden</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Luisa · Industriekauffrau i.A.</div>
+            <div class="zitat-card__text">Wenn die das schon im Praktikum in zwei Tagen so ausführlich und so gut rüberbringen, dann muss das eigentlich ja auch ein guter Ausbildungsbetrieb sein.</div>
+            <div class="zitat-card__meta">Zur Entscheidungslogik · Erfahrung = Vertrauen = Entscheidung</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Jana · Industriekauffrau i.A.</div>
+            <div class="zitat-card__text">Die meisten machen sich ehrlich gesagt ein bisschen darüber lustig … das ist ja schon peinlich.</div>
+            <div class="zitat-card__meta">Zu Unternehmensvideos im Freundeskreis · ungefiltertes Feedback zu gestellten Inhalten</div>
+        </div>
+        <div class="zitat-card">
+            <div class="zitat-card__person">Marie · Kauffrau f. Büromanagement i.A.</div>
+            <div class="zitat-card__text">Auf so einer Ausbildungsmesse trotten die da wirklich rum … die Lehrer haben keinen Bock, die Schüler haben keinen Bock.</div>
+            <div class="zitat-card__meta">Zur Wirkung von Ausbildungsmessen · direktes Feedback zur Kanalwirksamkeit</div>
+        </div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 3 · ERKENNTNISSE
+     ══════════════════════════════════════════════════════ -->
+<div id="tab-erkenntnisse" class="tab-panel">
+<main class="lt-main">
+
+<!-- 5 · KERNERKENNTNISSE -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">5</div>
+        <div class="lt-section__title">Fünf Kernerkenntnisse</div>
+    </div>
+
+    <div class="principle-card">
+        <div class="principle-num">A</div>
+        <div class="principle-body">
+            <strong>Marketing entscheidet nicht – persönliche Verbindung entscheidet</strong>
+            <p>Kein Interviewter hat EEW über Werbung oder einen klassischen Recruiting-Kanal gefunden. Opa, Vater, Onkel, Cousin, Probearbeiten – das ist der Entscheidungsweg. Marketing kann diesen Weg nicht ersetzen, aber vorbereiten: Wer EEW schon etwas kennt, wenn das familiäre Gespräch kommt, wird anders reagieren als jemand für den EEW völlig unbekannt ist.</p>
+        </div>
+    </div>
+    <div class="principle-card">
+        <div class="principle-num">B</div>
+        <div class="principle-body">
+            <strong>EEW ist stark – aber nicht sichtbar genug</strong>
+            <p>Wer EEW von innen erlebt, ist fast ausnahmslos begeistert. Die Bindung ist real und stark. Das Problem: EEW ist für die meisten Jugendlichen in der Region nicht präsent, bevor sie den ersten persönlichen Kontakt haben. Jana und Luisa sagten es unabhängig voneinander: EEW war „gar nicht auf dem Schirm". Das ist eine Kommunikationslücke, keine Qualitätslücke.</p>
+        </div>
+    </div>
+    <div class="principle-card">
+        <div class="principle-num">C</div>
+        <div class="principle-body">
+            <strong>Das Miteinander ist der eigentliche Kern</strong>
+            <p>„Familiär, seriös und gut" (Julius), „aufgenommen gefühlt" (Jana), „empfangen gefühlt" (Jannik), „nicht ausgenutzt" (Luca) – die Sprache aller Befragten kreist um dasselbe: das Gefühl, als Mensch und nicht als Personalnummer behandelt zu werden. Das ist EEWs stärkster Differenziator – und er ist vollständig authentisch. Er kann gezeigt, nicht erfunden werden.</p>
+        </div>
+    </div>
+    <div class="principle-card">
+        <div class="principle-num">D</div>
+        <div class="principle-body">
+            <strong>Authentizität ist nicht optional</strong>
+            <p>Janas Freundeskreis lacht über Unternehmensvideos – „das ist ja schon peinlich." Marie nennt Ausbildungsmessen als Ort wo alle schlechte Laune haben. Die Zielgruppe hat ein sehr feines Gespür dafür, was echt ist und was nicht. Inhalte müssen aus dem echten Alltag kommen – ungefiltert, mit echter Sprache, echten Menschen, echten Momenten.</p>
+        </div>
+    </div>
+    <div class="principle-card">
+        <div class="principle-num">E</div>
+        <div class="principle-body">
+            <strong>EEW muss in den Alltag der Zielgruppe – nicht umgekehrt</strong>
+            <p>Luisa hat die Zeitungsanzeige gesehen (Print funktioniert noch für Eltern und Großeltern). Julius scrollt morgens Instagram. Jana hört Podcasts. Jannik schaut YouTube. Luca fährt morgens Radio. Die Zielgruppe kommt nicht zu EEW. EEW muss dort erscheinen wo sie bereits sind – kontinuierlich, nicht saisonal, und immer authentisch.</p>
+        </div>
+    </div>
+</section>
+
+<!-- 6 · WAS ZEIGEN / VERMEIDEN -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">6</div>
+        <div class="lt-section__title">Was die Marke zeigen muss – und was sie vermeiden muss</div>
+    </div>
+    <div class="lt-cols">
+        <div class="lt-card" style="border-top:4px solid #4ade80;">
+            <div class="lt-card__label" style="color:#166534;">Muss zeigen</div><br>
+            <div class="lt-prose">
+                <h4>Echte Menschen in echten Momenten</h4>
+                <p>Nicht der beste Tag – ein normaler Tag. Der Kantinenmoment, der erste Schweißbrenner, der Witz zwischen Ausbilder und Azubi.</p>
+                <h4>Das Miteinander als tägliche Realität</h4>
+                <p>Julius kannte Kollegen durch den Fußballverein. Luca hat Vater und Onkel im Betrieb. Jannik hat seinen Opa dort. Diese Netzwerke sind das Herz von EEW – zeigen, nicht beschreiben.</p>
+                <h4>Größe mit Bodenständigkeit</h4>
+                <p>Weltmarktführer und trotzdem kennt der Geschäftsführer deinen Namen. Was EEW baut, steht in der Nordsee. Das erklärt Marie am Esstisch ihrem Vater. Das ist die Story.</p>
+                <h4>Kurze Wege als Alltag</h4>
+                <p>„Geil, mach das – am besten gestern schon" (Marie). Das ist kein Marketing-Versprechen. Das ist Realität. Es muss erlebbar werden.</p>
+            </div>
+        </div>
+        <div class="lt-card" style="border-top:4px solid #f87171;">
+            <div class="lt-card__label" style="color:#b91c1c;">Muss vermeiden</div><br>
+            <div class="lt-prose">
+                <h4>Polierte Unternehmensvideos</h4>
+                <p>„Das ist ja schon peinlich" (Jana). Nichts schadet der Marke mehr als Content der sofort als Werbung erkannt wird und im Freundeskreis belacht wird.</p>
+                <h4>Abstrakte Karriereversprechen</h4>
+                <p>„Entfalte deine Potenziale", „internationales Umfeld" – das sagt jeder. Nichts davon zieht. Konkretes Erleben zieht.</p>
+                <h4>Ausbildungsmessen als Hauptkanal</h4>
+                <p>„Die trotten da wirklich rum" (Marie). Der Kanal ist tot für die eigentliche Zielgruppe. Allenfalls für Eltern und Lehrer als Multiplikatoren noch sinnvoll.</p>
+                <h4>Saisonales Recruiting</h4>
+                <p>Wer EEW nur im Herbst-Fenster sieht, kennt EEW nicht. Vertrautheit baut sich über Zeit und Wiederholung auf – 52 Wochen, nicht 4.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 7 · TONALITÄT -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">7</div>
+        <div class="lt-section__title">Tonalität &amp; Ansprache</div>
+    </div>
+    <table class="lt-table">
+        <thead><tr><th>Dimension</th><th>So klingt EEW richtig</th><th>So klingt EEW falsch</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Grundton</strong></td><td>Wie ein älterer Kollege der erklärt, wie's wirklich ist – direkt, unkompliziert, auf Augenhöhe</td><td>Wie eine HR-Abteilung die einen Flyer schreibt – formal, distanziert, generisch</td></tr>
+            <tr><td><strong>Über Ausbildung</strong></td><td>„Komm vorbei, schau dir an wie wir hier arbeiten."</td><td>„Starte deine Ausbildung bei einem der führenden Arbeitgeber der Region."</td></tr>
+            <tr><td><strong>Über EEW</strong></td><td>„Wir schweißen Rohre für Offshore-Windkraft. Klingt abstrakt – du kannst sie anfassen."</td><td>„Als international tätiges Industrieunternehmen bieten wir Ihnen…"</td></tr>
+            <tr><td><strong>Über Entwicklung</strong></td><td>„Nach dem zweiten Jahr war ich zwei Wochen in Korea – um zu sehen wie das Werk dort läuft."</td><td>„Internationale Karriereperspektiven in einem global agierenden Konzern."</td></tr>
+            <tr><td><strong>Über das Team</strong></td><td>„Wenn ich nicht weiter weiß, frag ich einfach – irgendjemand weiß es immer."</td><td>„Unser eingespieltes Team unterstützt Sie bei Ihrer persönlichen Entwicklung."</td></tr>
+            <tr><td><strong>Anredeform</strong></td><td>Du – immer. Keine Ausnahme.</td><td>Sie – nie in der Azubi-Ansprache.</td></tr>
+        </tbody>
+    </table>
+    <div class="lt-tags">
+        <span class="lt-tag">Direkt</span><span class="lt-tag">Konkret</span><span class="lt-tag">Unkompliziert</span><span class="lt-tag">Menschlich</span><span class="lt-tag">Zeigen statt versprechen</span>
+        <span class="lt-tag--outline lt-tag">kein Corporate-Sprech</span><span class="lt-tag--outline lt-tag">keine Phrasen</span><span class="lt-tag--outline lt-tag">keine Überhöhung</span>
+    </div>
+</section>
+
+</main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 4 · MARKENCHARAKTER
+     ══════════════════════════════════════════════════════ -->
+<div id="tab-marke" class="tab-panel">
+<main class="lt-main">
+
+<!-- 8 · VIER ZIELGRUPPEN-TYPEN -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">8</div>
+        <div class="lt-section__title">Vier Zielgruppen-Typen</div>
+    </div>
+    <div class="lt-cols lt-cols--4">
+        <div class="lt-card">
+            <div class="lt-card__label">Typ 1 (dominant)</div>
+            <br><strong style="font-size:14px;color:var(--lt-dark-green);">Der Sicherheitsorientierte</strong><br><br>
+            <div class="lt-prose" style="font-size:13px;">Stabiles Leben in der Region. Elternmeinung zählt. Will wissen: „Ist EEW in 10 Jahren noch da?" → Julius, Jannik (Eltern-Einfluss, regionale Verlässlichkeit)</div>
+            <div class="lt-tags" style="margin-top:10px;"><span class="lt-tag">Stabilität</span><span class="lt-tag">Region</span></div>
+        </div>
+        <div class="lt-card">
+            <div class="lt-card__label">Typ 2 (dominant)</div>
+            <br><strong style="font-size:14px;color:var(--lt-dark-green);">Der Gemeinschaftsorientierte</strong><br><br>
+            <div class="lt-prose" style="font-size:13px;">Entscheidet über soziales Gefüge. Will reinpassen. Kommt meist über persönliche Empfehlung. → Luca (Vater+Onkel bei EEW), Julius (Fußball-Kontakte)</div>
+            <div class="lt-tags" style="margin-top:10px;"><span class="lt-tag">Miteinander</span><span class="lt-tag">Empfehlung</span></div>
+        </div>
+        <div class="lt-card">
+            <div class="lt-card__label">Typ 3</div>
+            <br><strong style="font-size:14px;color:var(--lt-dark-green);">Der Handwerklich-Praktische</strong><br><br>
+            <div class="lt-prose" style="font-size:13px;">Will anfassen, machen, sehen was entsteht. Abstrakte Versprechen interessieren nicht. → Luca (Konstruktionsmechaniker, handwerklicher Sinn)</div>
+            <div class="lt-tags" style="margin-top:10px;"><span class="lt-tag">Einblick</span><span class="lt-tag">Handwerk</span></div>
+        </div>
+        <div class="lt-card">
+            <div class="lt-card__label">Typ 4</div>
+            <br><strong style="font-size:14px;color:var(--lt-dark-green);">Der Entwicklungsorientierte</strong><br><br>
+            <div class="lt-prose" style="font-size:13px;">Will wachsen, Neues erleben, über die Region hinaus. Offshore, Korea, USA – klingt interessant. → Marie (Bachelor/Master im Blick), Luisa (Abi → Ausbildung als beste Entscheidung)</div>
+            <div class="lt-tags" style="margin-top:10px;"><span class="lt-tag">Perspektive</span><span class="lt-tag">Wachstum</span></div>
+        </div>
+    </div>
+    <div class="hinweis-box">
+        <strong>Für die Markenentwicklung:</strong> Typ 1 und 2 dominieren in der Region Siegen-Wittgenstein. Die Marke muss diese zuerst abholen – ohne Typ 3 und 4 zu verlieren. EEW hat für alle vier Typen überzeugendes Material.
+    </div>
+</section>
+
+<!-- 9 · MARKEN-PERSONA -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">9</div>
+        <div class="lt-section__title">EEW als Person – Marken-Persona</div>
+    </div>
+    <p style="font-size:13px;color:#666;margin-bottom:24px;">Wenn die EEW AzubiMarke ein Mensch wäre – wer wäre er? Die Persona übersetzt Markenwerte in eine konkrete, anfassbare Persönlichkeit. Sie dient als Kalibrierungsinstrument: Passt dieser Inhalt zu Finn? Dann passt er zur Marke.</p>
+
+    <div class="persona-wrap">
+        <div class="persona-card">
+            <div class="persona-card__name">Finn</div>
+            <div class="persona-card__tagline">Der Typ von nebenan. Nur dass er Rohre für Offshore-Windkraft baut.</div>
+            <ul class="persona-card__attrs">
+                <li><span class="attr-label">Alter</span> 23 Jahre</li>
+                <li><span class="attr-label">Beruf</span> Konstruktionsmechaniker bei EEW, frisch ausgelernt</li>
+                <li><span class="attr-label">Wohnort</span> Erndtebrück – 3 Minuten zur Arbeit</li>
+                <li><span class="attr-label">Freizeit</span> Fußball (Kreisliga C), Gym, Freunde, ab und zu Ski in Winterberg</li>
+                <li><span class="attr-label">Social</span> Instagram privat, ~200 Follower, meist aus dem Ort</li>
+                <li><span class="attr-label">Medien</span> TikTok zum Abschalten, YouTube wenn er was verstehen will, Radio im Auto</li>
+                <li><span class="attr-label">Aussehen</span> Arbeitshände, saubere Arbeitskleidung, EEW-Hoodie – der echte, nicht der aus dem Shooting</li>
+                <li><span class="attr-label">Auto</span> Gebrauchter Golf, Radio läuft</li>
+            </ul>
+        </div>
+
+        <div class="persona-traits">
+            <div class="trait-block">
+                <div class="trait-block__label">Charakter</div>
+                <div class="trait-block__body">Redet nicht viel – aber wenn er redet, meint er's so. Lacht gerne, auch über sich selbst. Hat kein Problem damit, „ich weiß das nicht" zu sagen und dann jemanden zu fragen. Hilft ohne lang nachzufragen. Kommt pünktlich, macht was er sagt, beschwert sich nicht über Dinge die er nicht ändern kann.</div>
+            </div>
+            <div class="trait-block">
+                <div class="trait-block__label">Was ihn wirklich bewegt</div>
+                <div class="trait-block__body">Er weiß, dass das was er baut irgendwo vor der Küste Norwegens steht und Strom ins Netz einspeist. Das findet er nicht selbstverständlich und erzählt es ab und zu seiner Familie. Ihm ist wichtig, dass er nach der Arbeit Feierabend hat – nicht weil er faul ist, sondern weil er nach 8 Stunden echte Arbeit auch echte Freizeit will.</div>
+            </div>
+            <div class="trait-block">
+                <div class="trait-block__label">Was ihn nervt</div>
+                <div class="trait-block__body">Wenn Arbeit als „toll" verkauft wird statt als das was sie ist. Wenn Unternehmen so tun als wären sie eine Familie aber einen dann behandeln wie eine Zahl. Wenn jemand redet statt macht. Hochglanz-Recruiter die auf Messen stehen und lächeln ohne wirklich was zu sagen zu haben.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lt-cols">
+        <ul class="finn-says">
+            <div class="finn-says__label">Finn sagt</div>
+            <li>Hier kennt mich jeder. Das klingt banal, ist es aber nicht.</li>
+            <li>Ich dachte zuerst, das ist ein riesiger Laden. Aber der Chef weiß wie ich heiße.</li>
+            <li>Ich geh nicht zur Ausbildung. Ich geh zur Arbeit.</li>
+            <li>Das Zeug das wir bauen steht wirklich da draußen. Das ist schon geil.</li>
+            <li>Wenn ich nicht weiter weiß, frag ich einfach. Irgendjemand weiß's immer.</li>
+            <li>EEW gibt dir eine Chance, auch wenn deine Noten nicht perfekt sind.</li>
+        </ul>
+        <ul class="finn-never">
+            <div class="finn-never__label">Finn sagt nie</div>
+            <li>Entfalte dein Potenzial in einem dynamischen Arbeitsumfeld</li>
+            <li>Ich arbeite hier, um meine Karriere voranzutreiben</li>
+            <li>EEW bietet mir internationale Karriereperspektiven</li>
+            <li>Als zukunftsorientiertes Industrieunternehmen...</li>
+            <li>Work hard, play hard</li>
+            <li>Ich liebe es, Teil der EEW-Familie zu sein</li>
+        </ul>
+    </div>
+
+    <div class="lt-highlight" style="margin-top:8px;">
+        <div class="lt-highlight__label">Kalibrierungs-Test für Inhalte</div>
+        <div class="lt-highlight__text">Bevor ein Inhalt veröffentlicht wird: Würde Finn das teilen? Würde Finn das sagen? Wenn nein: überarbeiten. Wenn ja: raus damit.</div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 5 · DESIGN
+     ══════════════════════════════════════════════════════ -->
+<div id="tab-design" class="tab-panel">
+<main class="lt-main">
+
+<!-- 10 · DESIGN-ANFORDERUNGEN -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">10</div>
+        <div class="lt-section__title">Design-Anforderungen – Was die Marke visuell kommunizieren muss</div>
+    </div>
+    <p style="font-size:13px;color:#666;margin-bottom:20px;">Abgeleitet aus dem Markencharakter und gestützt durch design- und wahrnehmungspsychologische Erkenntnisse. Ziel: Das visuelle System muss dieselben Werte transportieren wie die verbale Marke – nahbar, bodenständig, echt, stark.</p>
+
+    <div class="design-grid">
+        <div class="design-card">
+            <div class="design-card__header dc-color">
+                <div>Farbwelt</div>
+                <div class="color-swatch" style="margin-top:10px;">
+                    <div><div class="swatch" style="background:#cc0000;"></div><div class="swatch-label">EEW Rot</div></div>
+                    <div><div class="swatch" style="background:#d4a84b;"></div><div class="swatch-label">Warmgold</div></div>
+                    <div><div class="swatch" style="background:#e8e0d4;"></div><div class="swatch-label">Sand</div></div>
+                    <div><div class="swatch" style="background:#2a2a2a;"></div><div class="swatch-label">Anthrazit</div></div>
+                    <div><div class="swatch" style="background:#f5f0ea;"></div><div class="swatch-label">Off-White</div></div>
+                </div>
+            </div>
+            <div class="design-card__body">
+                <ul>
+                    <li><strong>EEW Rot (#CC0000):</strong> Primärfarbe halten – Julius: „Das rote Logo fühlt sich warm und schön an." Emotionaler Anker.</li>
+                    <li><strong>Warme Ergänztöne:</strong> Sand, Warmgold, Off-White – signalisieren Bodenständigkeit, Wärme, Nähe.</li>
+                    <li><strong>Anthrazit statt Schwarz:</strong> Weicher, weniger hart, authentischer.</li>
+                    <li><strong>Keine kalten Blautöne:</strong> Signalisieren Distanz und Kälte – konträr zu EEWs Kern.</li>
+                    <li><strong>Keine Neonfarben:</strong> Unglaubwürdig für ein bodenständiges Industrieunternehmen.</li>
+                </ul>
+            </div>
+            <div class="design-card__science">Warm colors increase perceived warmth and approachability (Elliot &amp; Maier, 2012); Industrial red in low-tech contexts signals trust and competence (Heller, „Wie Farben wirken", 2004)</div>
+        </div>
+
+        <div class="design-card">
+            <div class="design-card__header dc-typo">Typografie</div>
+            <div class="design-card__body">
+                <ul>
+                    <li><strong>Humanistische Grotesk:</strong> z.B. Inter, Source Sans Pro, Raleway – diese Schriften wirken warm UND klar. Nicht geometrisch-kalt (wie Futura) und nicht verspielt (wie Handschriften).</li>
+                    <li><strong>Schriftgewichte:</strong> Bold für Kernaussagen und Headlines – signalisiert Klarheit und Direktheit. Regular für Fließtext.</li>
+                    <li><strong>Sprachduktus:</strong> Kurze Sätze. Kein Nominalstil. Aktiv statt passiv. Wie Finn reden würde.</li>
+                    <li><strong>Kein Italic für Schlüsselbotschaften</strong> – wirkt zögerlich. Hauptaussagen immer in Bold/Regular.</li>
+                </ul>
+            </div>
+            <div class="design-card__science">Humanist sans-serifs perceived as warmer and more approachable than geometric typefaces (Lewis &amp; Walker, 1989; Tantillo et al., 1995)</div>
+        </div>
+
+        <div class="design-card">
+            <div class="design-card__header dc-form">Formsprache &amp; Layout</div>
+            <div class="design-card__body">
+                <ul>
+                    <li><strong>Gerundete Ecken:</strong> In UI-Elementen, Karten, Buttons – signalisieren Nahbarkeit und Wärme. Nicht ovale Softies, aber keine scharfen 90°-Kanten.</li>
+                    <li><strong>Asymmetrie statt starrem Raster:</strong> Menschlich und lebendig – ohne chaotisch zu wirken.</li>
+                    <li><strong>Strukturiert, aber atmend:</strong> Genug Weißraum für Klarheit. Überfrachtete Layouts wirken unprofessionell und distanzierend.</li>
+                    <li><strong>Industrielle Texturen als Akzente:</strong> Stahlstruktur, Schweißnaht, rohe Oberfläche – dezent eingesetzt als Verweis auf das echte Handwerk.</li>
+                </ul>
+            </div>
+            <div class="design-card__science">Rounded shapes perceived as warmer and more approachable (Bouba/Kiki effect; Köhler 1929 / Ramachandran &amp; Hubbard, 2001); Balanced asymmetry = dynamic yet trustworthy (Berlyne, 1971)</div>
+        </div>
+
+        <div class="design-card">
+            <div class="design-card__header dc-bild">Bildwelt &amp; Fotografie</div>
+            <div class="design-card__body">
+                <ul>
+                    <li><strong>Dokumentarfotografie-Stil:</strong> Echte Situationen, echte Orte, echtes Licht. Kein Studio, keine Stylistin.</li>
+                    <li><strong>Candid &gt; Posed:</strong> Azubis bei der Arbeit, nicht beim Lächeln in die Kamera. Echter Moment &gt; perfekte Pose.</li>
+                    <li><strong>Close-ups:</strong> Arbeitshände, Werkzeug, Material, Schweißnähte – Handwerk macht stolz, zeige es.</li>
+                    <li><strong>Farbkorrektur:</strong> Warm, leicht entsättigt – wie ein gutes Handyvideo, nicht wie ein Werbefilm. Authentizität durch Imperfekte.</li>
+                    <li><strong>Keine Stockfotos:</strong> Werden sofort erkannt und zerstören Vertrauen.</li>
+                </ul>
+            </div>
+            <div class="design-card__science">Authentic, candid images are perceived as significantly more trustworthy than posed photography (Newman et al., 2020; Caddick et al., 2019)</div>
+        </div>
+
+        <div class="design-card">
+            <div class="design-card__header dc-ton">Visuelle Tonalität</div>
+            <div class="design-card__body">
+                <ul>
+                    <li><strong>Mutig ≠ laut:</strong> Starke Aussagen brauchen kein Geschrei. Ein klares Bild mit einem kurzen echten Satz wirkt mehr als eine überladene Grafik.</li>
+                    <li><strong>Humor ist erlaubt:</strong> Selbstironie und Witz passen zu Finn. Aber immer mit Niveau – nie auf Kosten anderer.</li>
+                    <li><strong>Maschinen UND Menschen:</strong> Immer beides zeigen. Ohne Menschen ist es Produktkatalog. Ohne Maschinen fehlt die EEW-Realität.</li>
+                    <li><strong>Weltklasse sichtbar machen:</strong> Ein Bild des fertigen Rohres auf der Nordsee kostet nichts und sagt alles. Produkt + Kontext = Story.</li>
+                </ul>
+            </div>
+            <div class="design-card__science">Visual congruence between brand personality and design elements increases perceived authenticity by up to 34% (van Rompay &amp; Pruyn, 2011)</div>
+        </div>
+
+        <div class="design-card">
+            <div class="design-card__header dc-layout">Social-Media-Ästhetik</div>
+            <div class="design-card__body">
+                <ul>
+                    <li><strong>Hochformat first:</strong> 9:16 für Stories/Reels, 4:5 für Feed. Desktop ist nachrangig.</li>
+                    <li><strong>Kein übermäßiges Branding:</strong> Ein kleines EEW-Logo reicht. Claim als Titel wenn passend. Keine Vollbild-Logo-Animationen.</li>
+                    <li><strong>Text im Video:</strong> Viele scrollen ohne Ton. Wichtige Aussagen immer als Untertitel/Text im Bild.</li>
+                    <li><strong>Plattform-spezifisch:</strong> TikTok = roh und direkt. Instagram = etwas aufgeräumter. YouTube = Erklärkraft. Kein Copy-Paste zwischen Plattformen.</li>
+                </ul>
+            </div>
+            <div class="design-card__science">85% of social video is watched without sound – text overlays increase message retention by 2.4x (Facebook IQ, 2016); platform-matched content outperforms cross-posted content by 43% engagement (Sprout Social, 2024)</div>
+        </div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 6 · WORKSHOP
+     ══════════════════════════════════════════════════════ -->
+<div id="tab-workshop" class="tab-panel">
+<main class="lt-main">
+
+<!-- 11 · MARKENPRINZIPIEN -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">11</div>
+        <div class="lt-section__title">Sieben Markenprinzipien</div>
+    </div>
+    <div class="principle-card"><div class="principle-num">1</div><div class="principle-body"><strong>Zeigen statt erklären</strong><p>Ein 30-Sekunden-Video das einen echten Moment zeigt wirkt mehr als drei Absätze die beschreiben wie toll die Ausbildung ist.</p></div></div>
+    <div class="principle-card"><div class="principle-num">2</div><div class="principle-body"><strong>Innenleben nach außen kehren</strong><p>EEW hat keine Identitätslücke. Es hat eine Kommunikationslücke. Der Job ist Sichtbarmachung, nicht Erfindung.</p></div></div>
+    <div class="principle-card"><div class="principle-num">3</div><div class="principle-body"><strong>Vertrautheit vor Überzeugung</strong><p>Niemand bewirbt sich bei einem Unternehmen das sich fremd anfühlt. EEW muss im Kopf sein, bevor die Bewerbungsphase beginnt.</p></div></div>
+    <div class="principle-card"><div class="principle-num">4</div><div class="principle-body"><strong>Azubis sprechen – nicht EEW über seine Azubis</strong><p>Wenn EEW über seine Azubis spricht, ist es Werbung. Wenn Azubis über EEW sprechen, ist es Wahrheit.</p></div></div>
+    <div class="principle-card"><div class="principle-num">5</div><div class="principle-body"><strong>Kontinuierlich präsent statt saisonal laut</strong><p>52 Wochen kleine echte Momente wirken mehr als eine Recruiting-Kampagne im September.</p></div></div>
+    <div class="principle-card"><div class="principle-num">6</div><div class="principle-body"><strong>Umfeld mitdenken und aktivieren</strong><p>Eltern, Lehrer, Vereinstrainer – sie treffen die Entscheidung mit. Oft mehr als der Jugendliche selbst.</p></div></div>
+    <div class="principle-card"><div class="principle-num">7</div><div class="principle-body"><strong>Die Spannung halten: Weltklasse + bodenständig</strong><p>EEW ist Weltmarktführer. EEW ist bodenständig. Das ist kein Widerspruch – das ist der einzigartige Charakter. Niemand sonst im Wettbewerb kann diese Spannung spielen.</p></div></div>
+</section>
+
+<!-- 12 · NÄCHSTE SCHRITTE -->
+<section class="lt-section">
+    <div class="lt-section__header">
+        <div class="lt-section__number">12</div>
+        <div class="lt-section__title">Nächste Schritte &amp; Workshop-Vorbereitung</div>
+    </div>
+    <ul class="lt-actions">
+        <li><div class="lt-actions__num">1</div><div class="lt-actions__text"><strong>Persona „Finn" im Workshop kalibrieren</strong>Persona gemeinsam mit EEW-Team prüfen: Trifft das zu? Was fehlt? Was stimmt nicht? Erst wenn EEW sagt „Ja, das ist wir" ist die Persona einsatzbereit.</div></li>
+        <li><div class="lt-actions__num">2</div><div class="lt-actions__text"><strong>Leitidee aus Persona und Kernbefund entwickeln</strong>Auf Basis von Finn + dem Kernbefund (EEW redet zu leise über das was es wirklich ist) einen konkreten Claim/Leitgedanken entwickeln. Vorschlag als Startpunkt: „Hier kennt dich jemand."</div></li>
+        <li><div class="lt-actions__num">3</div><div class="lt-actions__text"><strong>Design-Anforderungen in Briefing übersetzen</strong>Die Vorgaben aus Tab 5 als konkretes Design-Briefing für Diana aufbereiten: Farbwelt, Typografie, Bildwelt, Bildsprache-Beispiele (Mood Board).</div></li>
+        <li><div class="lt-actions__num">4</div><div class="lt-actions__text"><strong>Azubi-Botschafter identifizieren</strong>2–3 echte EEW-Azubis die bereit sind Inhalte zu produzieren – nicht als Statisten, sondern als echte Stimme der Marke. Persönlichkeit und Authentizität vor Optik.</div></li>
+        <li><div class="lt-actions__num">5</div><div class="lt-actions__text"><strong>Content-Pilot planen (4 Wochen, 3 Formate)</strong>Azubi-Alltag (TikTok/Reels) · Azubi-Portrait (Instagram) · „Was macht der eigentlich?" (Erklärvideo). Testen vor dem Systemaufbau.</div></li>
+        <li><div class="lt-actions__num">6</div><div class="lt-actions__text"><strong>Touchpoint-Karte erstellen</strong>Alle Kontaktpunkte der Zielgruppe mit EEW kartieren. Welche werden aktiv bespielt? Welche fehlen? (Schule, Dorfjugend, Verein, Social, Print, Probearbeiten, Messe)</div></li>
+    </ul>
+</section>
+
+</main>
+</div>
+
+<!-- FOOTER -->
+<footer class="lt-footer">
+    <div>lemontree · EEW AzubiMarke Phase 2 · 07. Mai 2026 · Strategische Analyse</div>
+    <div class="lt-footer__brand">lemon<span>tree</span></div>
+</footer>
+
+<script>
+    function showTab(id, btn) {
+        // Hide all panels
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        // Deactivate all buttons
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        // Show selected panel
+        document.getElementById('tab-' + id).classList.add('active');
+        // Activate selected button
+        btn.classList.add('active');
+        // Scroll to top of content (below sticky nav)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
